@@ -389,15 +389,11 @@
     const ENDPOINT = 'https://formspree.io/f/xojnrgwk';
 
     try {
-      if (ENDPOINT !== 'https://formspree.io/f/xojnrgwk') {
-        const res = await fetch(ENDPOINT, {
-          method: 'POST', body: new FormData(this),
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!res.ok) throw new Error('fail');
-      } else {
-        await new Promise(r => setTimeout(r, 1400));
-      }
+      const res = await fetch(ENDPOINT, {
+        method: 'POST', body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) throw new Error('fail');
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successState').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
