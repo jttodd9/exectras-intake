@@ -266,23 +266,22 @@
       <div class="section-label">Schedule Your Math Check</div>
 
       <div class="field">
-        <label>Preferred date for your 15-min call <span class="req">*</span></label>
-        <input type="date" name="preferred_date" id="preferredDate" required>
-        <p class="field-note warn" id="dateInstruction">
-          &#128197; <strong>Pick a future date only</strong> &mdash; today and any past dates won't work. Joe's team will reach out to confirm the exact time before your call.
-        </p>
-        <p class="field-error" id="dateError">Please select a future date. Today and past dates are not valid.</p>
+        <label>Best way to reach you?</label>
+        <div class="pill-group">
+          <label class="pill"><input type="radio" name="contact_method" value="Phone Call"><span>Phone Call</span></label>
+          <label class="pill"><input type="radio" name="contact_method" value="Text"><span>Text</span></label>
+          <label class="pill"><input type="radio" name="contact_method" value="Email"><span>Email</span></label>
+        </div>
       </div>
 
       <div class="field">
-        <label>Preferred time of day <span class="req">*</span></label>
-        <div class="pill-group" id="timeGroup">
-          <label class="pill"><input type="radio" name="best_time" value="Morning (8am-12pm)"><span>Morning (8am&ndash;12pm)</span></label>
-          <label class="pill"><input type="radio" name="best_time" value="Afternoon (12pm-4pm)"><span>Afternoon (12&ndash;4pm)</span></label>
-          <label class="pill"><input type="radio" name="best_time" value="Evening (4pm-7pm)"><span>Evening (4&ndash;7pm)</span></label>
-          <label class="pill"><input type="radio" name="best_time" value="Flexible"><span>Flexible</span></label>
+        <label>When are you generally available?</label>
+        <div class="pill-group">
+          <label class="pill"><input type="radio" name="availability" value="Morning"><span>Morning</span></label>
+          <label class="pill"><input type="radio" name="availability" value="Afternoon"><span>Afternoon</span></label>
+          <label class="pill"><input type="radio" name="availability" value="Evening"><span>Evening</span></label>
+          <label class="pill"><input type="radio" name="availability" value="Flexible"><span>Flexible</span></label>
         </div>
-        <p class="field-error" id="timeError">Please select a preferred time of day.</p>
       </div>
 
       <div class="field">
@@ -315,33 +314,6 @@
 
 </div>
 <script>
-  const dateInput = document.getElementById('preferredDate');
-  const dateError = document.getElementById('dateError');
-  const timeGroup = document.getElementById('timeGroup');
-  const timeError = document.getElementById('timeError');
-
-  // Set min to tomorrow so the calendar won't even show today
-  function getTomorrow() {
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
-  }
-  dateInput.min = getTomorrow();
-
-  // Catch manual keyboard entry of past/today dates
-  dateInput.addEventListener('change', function () {
-    const val = this.value;
-    if (!val) return;
-    if (val <= new Date().toISOString().split('T')[0]) {
-      this.classList.add('input-err');
-      dateError.classList.add('show');
-      this.value = '';
-    } else {
-      this.classList.remove('input-err');
-      dateError.classList.remove('show');
-    }
-  });
-
   document.getElementById('intakeForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     let valid = true;
@@ -352,28 +324,8 @@
       else f.classList.remove('input-err');
     });
 
-    // Date must be future
-    if (!dateInput.value || dateInput.value <= new Date().toISOString().split('T')[0]) {
-      dateInput.classList.add('input-err');
-      dateError.classList.add('show');
-      valid = false;
-    } else {
-      dateInput.classList.remove('input-err');
-      dateError.classList.remove('show');
-    }
-
-    // Time must be selected
-    if (!this.querySelector('input[name="best_time"]:checked')) {
-      timeGroup.classList.add('group-err');
-      timeError.classList.add('show');
-      valid = false;
-    } else {
-      timeGroup.classList.remove('group-err');
-      timeError.classList.remove('show');
-    }
-
     if (!valid) {
-      this.querySelector('.input-err, .group-err')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      this.querySelector('.input-err')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
